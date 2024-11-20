@@ -17,12 +17,13 @@ jobs:
         CURRENT_DATE=$(date '+%d-%m-%Y-%H%M%S')
         echo "Nom : Donovan Lefevre" > "Q6_archive_${CURRENT_DATE}.txt"
         echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
+        echo "Taille du fichier Q6.java (en caractères, nombre de mots et lignes) :" >> "Q6_archive_${CURRENT_DATE}.txt"
+        wc Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"
+        echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
         echo "Contenu de Q6.java :" >> "Q6_archive_${CURRENT_DATE}.txt"
         cat Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"
         
-        echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
-        echo "Taille du fichier Q6.java (en caractères et lignes) :" >> "Q6_archive_${CURRENT_DATE}.txt"
-        wc Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"
+
 
     - name: Create Q6_différences.txt
       run: |
