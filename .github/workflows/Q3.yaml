@@ -1,0 +1,37 @@
+name: Q3 - Archive Java File
+
+on:
+  push:
+    paths:
+      - "Q3.java"
+
+jobs:
+  archive-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create Q3_archive_java.txt
+      run: |
+        echo "Nom : Donovan Lefevre" > Q3_archive_java.txt
+        echo "" >> Q3_archive_java.txt
+        echo "Contenu de Q3.java :" >> Q3_archive_java.txt
+        cat Q3.java >> Q3_archive_java.txt
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "DonovanLef"
+        git config --global user.email "donovan.lefevre@etu.univ-lehavre.fr"
+
+    - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/DonovanLef/R5-07-DS.git
+        git stash
+        git pull origin main --rebase
+        git stash pop
+        git add Q3_archive_java.txt
+        git commit -m "Update Q3_archive_java.txt"
+        git push origin main
