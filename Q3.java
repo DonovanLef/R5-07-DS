@@ -2,7 +2,7 @@ public class Q3 {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Veuillez fournir le nombre d'étoiles en paramètre.");
-            return;
+            return; 
         }
         
         try {
