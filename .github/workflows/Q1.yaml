@@ -25,7 +25,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git pull origin main --rebase
         git add Q1_archive_README.md
+        git pull origin main --rebase
         git commit -m "Add Q1_archive_README.md"
         git push
