@@ -8,19 +8,20 @@ on:
 jobs:
   archive-and-push:
     runs-on: ubuntu-latest
+    env:
+      CURRENT_DATE: $(date '+%d-%m-%Y-%H%M%S')
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Create Q6_archive_date.txt
       run: |
-        CURRENT_DATE=$(date '+%d-%m-%Y-%H%M%S')
         echo "Nom : Donovan Lefevre" > "Q6_archive_${CURRENT_DATE}.txt"
         echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
         echo "Contenu de Q6.java :" >> "Q6_archive_${CURRENT_DATE}.txt"
         cat Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"
-        echo "Fichier créé : Q6_archive_${CURRENT_DATE}.txt"
-      
+
     - name: Configure Git
       run: |
         git config --global user.name "DonovanLef"
@@ -44,7 +45,6 @@ jobs:
     - name: Create Q6_différences.txt
       run: |
         FILES=$(ls Q6_archive_*.txt | sort)
-
         if [ $(echo "$FILES" | wc -l) -ge 2 ]; then
           PREVIOUS_FILE=$(echo "$FILES" | tail -n 2 | head -n 1)
           echo "Comparaison entre Q6_archive_${CURRENT_DATE}.txt et $PREVIOUS_FILE" > "Q6_différences.txt"
@@ -58,7 +58,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        # Ajouter les fichiers créés et les pousser vers le dépôt
         git add "Q6_archive_${CURRENT_DATE}.txt"
         git add "Q6_différences.txt"
         git commit -m "Add Q6_archive_${CURRENT_DATE}.txt and Q6_différences.txt"
