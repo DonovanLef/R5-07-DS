@@ -1,0 +1,41 @@
+name: Q5 - Archive Java File with Date
+
+on:
+  push:
+    paths:
+      - "Q5.java"
+
+jobs:
+  archive-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create Q5_archive_date.txt
+      run: |
+        CURRENT_DATE=$(date '+%d-%m-%Y')
+        echo "Nom : Donovan Lefevre" > "Q5_archive_${CURRENT_DATE}.txt"
+        echo "" >> "Q5_archive_${CURRENT_DATE}.txt"
+        echo "Contenu de Q5.java :" >> "Q5_archive_${CURRENT_DATE}.txt"
+        cat Q5.java >> "Q5_archive_${CURRENT_DATE}.txt"
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "DonovanLef"
+        git config --global user.email "donovan.lefevre@etu.univ-lehavre.fr"
+
+    - name: Pull latest changes
+      run: |
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/DonovanLef/R5-07-DS.git
+        git pull origin main --rebase
+
+    - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        CURRENT_DATE=$(date '+%d-%m-%Y')
+        echo "Fichier à ajouter : Q5_archive_${CURRENT_DATE}.txt"
+        git add "Q5_archive_${CURRENT_DATE}.txt"
+        git commit -m "Update Q5_archive_${CURRENT_DATE}.txt"
+        git push origin main
