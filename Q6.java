@@ -3,7 +3,7 @@ public class Q6 {
         if (args.length < 1) {
             System.out.println("Veuillez fournir le nombre d'étages du triangle.");
             return;
-        }
+        } 
 
         try { 
             int numRows = Integer.parseInt(args[0]); 
