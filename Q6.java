@@ -2,7 +2,7 @@ public class Q6 {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Veuillez fournir le nombre d'étages du triangle.");
-            return;
+            return; 
         } 
 
         try { 
