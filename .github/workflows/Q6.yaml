@@ -1,4 +1,4 @@
-name: Q6 - Archive Java File with Date and Diff
+name: Q6 - Archive Java File with Date
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - "Q6.java"
 
 jobs:
-  archive-and-diff:
+  archive-and-push:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -17,40 +17,49 @@ jobs:
         CURRENT_DATE=$(date '+%d-%m-%Y-%H%M%S')
         echo "Nom : Donovan Lefevre" > "Q6_archive_${CURRENT_DATE}.txt"
         echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
-        echo "Taille du fichier Q6.java (en caractères, nombre de mots et lignes) :" >> "Q6_archive_${CURRENT_DATE}.txt"
-        wc Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"
-        echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
         echo "Contenu de Q6.java :" >> "Q6_archive_${CURRENT_DATE}.txt"
         cat Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"
-        
-
-
-    - name: Create Q6_différences.txt
-      run: |
-        # Vérifier si un fichier précédent existe
-        FILES=$(ls Q6_archive_*.txt | sort)
-        
-        # S'il y a plus d'un fichier, faire une comparaison avec le fichier précédent
-        if [ $(echo "$FILES" | wc -l) -ge 2 ]; then
-          PREVIOUS_FILE=$(echo "$FILES" | tail -n 2 | head -n 1)  # Dernier fichier avant celui-ci
-          echo "Comparaison entre les fichiers Q6_archive_${CURRENT_DATE}.txt et $PREVIOUS_FILE" > "Q6_différences.txt"
-          echo "" >> "Q6_différences.txt"
-          diff $PREVIOUS_FILE "Q6_archive_${CURRENT_DATE}.txt" >> "Q6_différences.txt"
-        else
-          echo "Aucun fichier précédent trouvé pour la comparaison." > "Q6_différences.txt"
-        fi
+        echo "Fichier créé : Q6_archive_${CURRENT_DATE}.txt"
       
     - name: Configure Git
       run: |
         git config --global user.name "DonovanLef"
         git config --global user.email "donovan.lefevre@etu.univ-lehavre.fr"
 
+    - name: Commit or stash local changes
+      run: |
+        if [[ -n $(git status --porcelain) ]]; then
+          echo "Des modifications locales non indexées ont été trouvées."
+          git add .
+          git commit -m "Committing untracked changes before pull"
+        else
+          echo "Aucune modification locale non indexée."
+        fi
+
+    - name: Pull latest changes
+      run: |
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/DonovanLef/R5-07-DS.git
+        git pull origin main --rebase
+
+    - name: Create Q6_différences.txt
+      run: |
+        FILES=$(ls Q6_archive_*.txt | sort)
+
+        if [ $(echo "$FILES" | wc -l) -ge 2 ]; then
+          PREVIOUS_FILE=$(echo "$FILES" | tail -n 2 | head -n 1)
+          echo "Comparaison entre Q6_archive_${CURRENT_DATE}.txt et $PREVIOUS_FILE" > "Q6_différences.txt"
+          echo "" >> "Q6_différences.txt"
+          diff $PREVIOUS_FILE "Q6_archive_${CURRENT_DATE}.txt" >> "Q6_différences.txt"
+        else
+          echo "Aucun fichier précédent trouvé pour la comparaison." > "Q6_différences.txt"
+        fi
+
     - name: Commit and push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        CURRENT_DATE=$(date '+%d-%m-%Y-%H%M%S')
-        echo "Fichiers à ajouter : Q6_archive_${CURRENT_DATE}.txt et Q6_différences.txt"
-        git add "Q6_archive_${CURRENT_DATE}.txt" "Q6_différences.txt"
-        git commit -m "Update Q6_archive and Q6_différences files"
+        # Ajouter les fichiers créés et les pousser vers le dépôt
+        git add "Q6_archive_${CURRENT_DATE}.txt"
+        git add "Q6_différences.txt"
+        git commit -m "Add Q6_archive_${CURRENT_DATE}.txt and Q6_différences.txt"
         git push origin main
