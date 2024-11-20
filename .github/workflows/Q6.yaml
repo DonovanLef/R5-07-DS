@@ -22,7 +22,7 @@ jobs:
         
         # Ajouter la taille du fichier
         echo "" >> "Q6_archive_${CURRENT_DATE}.txt"
-        echo "Taille du fichier Q6.java (en caractères et lignes) :" >> "Q6_archive_${CURRENT_DATE}.txt"
+        echo "Taille du fichier Q6.java (en caractères, nombre de mots et lignes) :" >> "Q6_archive_${CURRENT_DATE}.txt"
         wc Q6.java >> "Q6_archive_${CURRENT_DATE}.txt"  # Affiche le nombre de caractères et de lignes
 
     - name: Create Q6_différences.txt
