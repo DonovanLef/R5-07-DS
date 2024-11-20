@@ -9,7 +9,7 @@ public class Q5 {
             int numRows = Integer.parseInt(args[0]); 
             for (int i = numRows; i >= 1; i--) {
                 for (int j = 1; j <= i; j++) {
-                    System.out.print("*");
+                    System.out.print("x");
                 }
                 System.out.println();
             }
