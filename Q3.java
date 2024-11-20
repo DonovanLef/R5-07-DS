@@ -8,7 +8,7 @@ public class Q3 {
         try {
             int numberOfStars = Integer.parseInt(args[0]);
             for (int i = 0; i < numberOfStars; i++) {
-                System.out.print("*");
+                System.out.print("*"); 
             }
             System.out.println();
         } catch (NumberFormatException e) {
