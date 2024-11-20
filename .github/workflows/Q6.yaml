@@ -8,12 +8,16 @@ on:
 jobs:
   archive-and-push:
     runs-on: ubuntu-latest
-    env:
-      CURRENT_DATE: $(date '+%d-%m-%Y-%H%M%S')
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Define CURRENT_DATE
+      id: define_date
+      run: |
+        CURRENT_DATE=$(date '+%d-%m-%Y-%H%M%S')
+        echo "CURRENT_DATE=$CURRENT_DATE" >> $GITHUB_ENV
 
     - name: Create Q6_archive_date.txt
       run: |
