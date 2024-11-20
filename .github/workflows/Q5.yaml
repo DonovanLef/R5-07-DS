@@ -25,16 +25,6 @@ jobs:
         git config --global user.name "DonovanLef"
         git config --global user.email "donovan.lefevre@etu.univ-lehavre.fr"
 
-    - name: Commit or stash local changes
-      run: |
-        if [[ -n $(git status --porcelain) ]]; then
-          echo "Des modifications locales non indexées ont été trouvées."
-          git add .
-          git commit -m "Committing untracked changes before pull"
-        else
-          echo "Aucune modification locale non indexée."
-        fi
-
     - name: Pull latest changes
       run: |
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/DonovanLef/R5-07-DS.git
