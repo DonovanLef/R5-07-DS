@@ -27,16 +27,19 @@ jobs:
 
     - name: Create Q6_différences.txt
       run: |
-        PREVIOUS_FILE=$(ls | grep -E "Q6_archive_\d{2}-\d{2}-\d{4}-\d{6}.txt" | sort | tail -n 2 | head -n 1)
+        # Vérifier si un fichier précédent existe
+        FILES=$(ls Q6_archive_*.txt | sort)
         
-        if [ -n "$PREVIOUS_FILE" ]; then
+        # S'il y a plus d'un fichier, faire une comparaison avec le fichier précédent
+        if [ $(echo "$FILES" | wc -l) -ge 2 ]; then
+          PREVIOUS_FILE=$(echo "$FILES" | tail -n 2 | head -n 1)  # Dernier fichier avant celui-ci
           echo "Comparaison entre les fichiers Q6_archive_${CURRENT_DATE}.txt et $PREVIOUS_FILE" > "Q6_différences.txt"
           echo "" >> "Q6_différences.txt"
           diff $PREVIOUS_FILE "Q6_archive_${CURRENT_DATE}.txt" >> "Q6_différences.txt"
         else
           echo "Aucun fichier précédent trouvé pour la comparaison." > "Q6_différences.txt"
         fi
-
+      
     - name: Configure Git
       run: |
         git config --global user.name "DonovanLef"
