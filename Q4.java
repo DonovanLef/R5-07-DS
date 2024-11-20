@@ -5,7 +5,7 @@ public class Q4 {
             return;  
         }
 
-        try {
+        try { 
             int numRows = Integer.parseInt(args[0]); 
             for (int i = 1; i <= numRows; i++) {
                 for (int j = 0; j < i; j++) {
