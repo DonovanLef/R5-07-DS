@@ -46,6 +46,6 @@ jobs:
       run: |
         CURRENT_DATE=$(date '+%d-%m-%Y')
         echo "Fichier à ajouter : Q5_archive_${CURRENT_DATE}.txt"
-        git add "Q5_archive_${CURRENT_DATE}.txt"
+        git add -f "Q5_archive_${CURRENT_DATE}.txt"
         git commit -m "Update Q5_archive_${CURRENT_DATE}.txt"
         git push origin main
