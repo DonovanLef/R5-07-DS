@@ -11,7 +11,7 @@ public class Q6 {
                 for (int j = 1; j <= i; j++) {
                     System.out.print("x");
                 }
-                System.out.println();
+                System.out.println(); 
             }
         } catch (NumberFormatException e) {
             System.out.println("Le paramètre doit être un entier.");
