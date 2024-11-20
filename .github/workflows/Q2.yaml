@@ -1,0 +1,35 @@
+name: Q2 - Create Archive with Metadata
+
+on:
+  push:
+    paths:
+      - "README.md"
+
+jobs:
+  create-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Create Q2_archive_README.md
+      run: |
+        echo "Nom : Donovan Lefevre" > Q2_archive_README.md
+        echo "Date et heure : $(date '+%Y-%m-%d %H:%M:%S')" >> Q2_archive_README.md
+        echo "" >> Q2_archive_README.md
+        echo "Contenu de README.md :" >> Q2_archive_README.md
+        cat README.md >> Q2_archive_README.md
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "DonovanLef"
+        git config --global user.email "donovan.lefevre@etu.univ-lehavre.fr"
+
+    - name: Commit and push changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/DonovanLef/R5-07-DS.git
+        git add Q2_archive_README.md
+        git commit -m "Add Q2_archive_README.md"
+        git push origin main
