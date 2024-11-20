@@ -25,11 +25,15 @@ jobs:
         git config --global user.name "DonovanLef"
         git config --global user.email "donovan.lefevre@etu.univ-lehavre.fr"
 
+
     - name: Commit and push changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git add Q2_archive_README.md
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/DonovanLef/R5-07-DS.git
+        git stash
         git pull origin main --rebase
-        git commit -m "Add Q2_archive_README.md"
+        git stash pop
+        git add Q2_archive_README.md 
+        git commit -m "Update Q2_archive_README.md"
         git push origin main
